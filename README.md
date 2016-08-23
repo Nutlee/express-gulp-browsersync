@@ -2,7 +2,9 @@
 
 自动打包自动刷新 mock 环境
 
-## 使用开发环境
+## 使用环境
+
+开发环境
 
 * 下载所有文件
 
@@ -15,14 +17,24 @@ npm install
 ```
 gulp
 ```
+
+生产环境
+
 * 首次运行请先进行强制打包
 
 ```
 gulp fcompile
 ```
+* 一键运行
+
+```
+gulp production
+```
 
 dist 文件夹下存放编译静态资源的源文件
 public 文件夹下放编译后的文件
+
+开发环境下只会进行 less 编译和从开发文件夹拷贝其他静态文件到发布为止（public）下。
 
 默认启动后打开 http://localhost:5000 如果网页没反应请尝试手动刷新一次，或访问 ttp://localhost:5000/html/index.html
 
@@ -66,7 +78,15 @@ public 文件夹下放编译后的文件
 	gulp clean
 	```
 	
-## 手动启动服务器并开启自动刷新
+	注：
+	使用 命令后加 -dev 进行开发环境部署，如 
+	
+	```
+	# 开发环境仅仅编译 less
+	gulp styles-dev 
+	```
+	
+## 手动启动服务器并开启浏览器自动刷新
 
 ```
 gulp browser-sync

@@ -18,7 +18,15 @@ var gulp = require('gulp'),
 	nodemon = require('gulp-nodemon'),
 	browserSync = require('browser-sync').create();
 
-// 源地址 和 编译资源后地址
+var path = {
+	src: "public/",
+	build: "dist/",
+	scripts: "js/",
+	styles:"css/",
+	images:"images/",
+	ejs:""
+}
+// 编译输出地址 和 源地址
 var compileOutDir = 'public',
 	sourceDir = 'dist';
 
@@ -35,9 +43,22 @@ gulp.task('styles',function(){
     // .pipe(gulp.dest('dist/css'))
 	.pipe(rename({suffix:".min"}))
 	.pipe(cssmin())
-	.pipe(sourcemaps.write())  // 执行sourcemaps
+	.pipe(sourcemaps.write())  
     .pipe(gulp.dest(compileOutDir+'/css'))
-    .pipe(notify({ message: 'Styles task complete' })); //将会在src/css下生成index.css
+    .pipe(notify({ message: 'Styles task complete' })); 
+});
+gulp.task('styles-dev',function(){
+	return gulp.src(sourceDir+'/less/*.less')
+	.pipe(sourcemaps.init()) // 执行sourcemaps
+	.pipe(less({
+		plugins: [autoprefix]
+	}).on('error', notify.onError(function (error) {
+            return 'Error compiling LESS: ' + error.message;
+    	}))
+	)
+	.pipe(sourcemaps.write())  
+    .pipe(gulp.dest(compileOutDir+'/css'))
+    .pipe(notify({ message: 'Styles task complete' })); 
 });
 
 // 压缩 js
@@ -45,6 +66,12 @@ gulp.task('scripts', function() {
     return gulp.src(sourceDir+'/js/*.js')
     	.pipe(rename({suffix:".min"}))
         .pipe(jsmin())
+        .pipe(gulp.dest(compileOutDir+'/js'))
+        .pipe(notify({message: "Scripts task complete"}));
+});
+//开发环境
+gulp.task('scripts-dev', function() {
+    return gulp.src(sourceDir+'/js/*.js')
         .pipe(gulp.dest(compileOutDir+'/js'))
         .pipe(notify({message: "Scripts task complete"}));
 });
@@ -63,11 +90,23 @@ gulp.task('ejs',function() {
 	.pipe(gulp.dest(compileOutDir+'/html/'))
 	.pipe(notify({message: "ejs task complete"}));
 });
+//开发环境
+gulp.task('html-dev',function() {
+	return gulp.src(sourceDir+"/html/*.html")
+	.pipe(gulp.dest(compileOutDir+'/html/'))
+	.pipe(notify({message: "html task complete"}));
+});
 
 // 压缩图片
 gulp.task('images', function() {  
   return gulp.src(sourceDir+'/images/**/*')
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
+    .pipe(gulp.dest(compileOutDir+'/images'))
+    .pipe(notify({ message: 'Images task complete'}));
+});
+//开发环境
+gulp.task('images-dev', function() {  
+  return gulp.src(sourceDir+'/images/**/*')
     .pipe(gulp.dest(compileOutDir+'/images'))
     .pipe(notify({ message: 'Images task complete'}));
 });
@@ -97,7 +136,6 @@ gulp.task('serve',function(cb) {
 
 //监控文件改动 刷新浏览器
 gulp.task('browser-sync', ['serve'],function () {
-
 	// 不能用 loalhost
 	return browserSync.init({
 		proxy: 'http://127.0.0.1:3000',
@@ -115,21 +153,34 @@ gulp.task('browser-sync', ['serve'],function () {
 });
 
 // 监控静态资源处理
-gulp.task('watch', function () {
+gulp.task('watch-production', function () {
     gulp.watch(sourceDir+'/less/*.less', ['styles']); //当所有less文件发生改变时，调用styles任务
     gulp.watch(sourceDir+'/js/*.js',['scripts']);
     gulp.watch(sourceDir+'/images/*',['images']);
     gulp.watch(sourceDir+'/templates/*.ejs',['ejs']);
 });
+gulp.task('watch-dev',function() {
+	gulp.start('styles-dev','scripts-dev','images-dev','html-dev');
+	gulp.watch(sourceDir+'/less/*.less', ['styles-dev']); //当所有less文件发生改变时，调用styles任务
+	gulp.watch(sourceDir+'/js/*.js',['scripts-dev']);
+	gulp.watch(sourceDir+'/images/*',['images-dev']);
+	gulp.watch(sourceDir+'/html/*',['html-dev']);
+})
+
+// 清理
 gulp.task('clean', function() {
     del([compileOutDir+'/css/*']);
     del([compileOutDir+'/js/*']);
     // del([compileOutDir+'/ejs/*']);
     del([compileOutDir+'/images/*']);
 });
+
+// 强制文件打包
 gulp.task('fcompile',['clean'],function() {
 	gulp.start('styles','scripts','images','ejs');
 });
 
-// 默认任务
-gulp.task('default',['browser-sync','watch']); //定义默认任务
+// 默认任务 开发环境
+gulp.task('default',['browser-sync','watch-dev']); //定义默认任务
+// 生产环境
+gulp.task('production',['browser-sync','watch-production']); 
