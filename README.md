@@ -66,7 +66,7 @@ public 文件夹下放编译后的文件
 	gulp clean
 	```
 	
-## 手动启动启动服务器并开启自动刷新
+## 手动启动服务器并开启自动刷新
 
 ```
 gulp browser-sync
