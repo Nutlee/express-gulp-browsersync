@@ -57,7 +57,7 @@ public 文件夹下放编译后的文件
 	jshint 校验
 	
 	```
-	gulp hint
+	gulp jshint
 	```
 	
 * ejs 模板编译

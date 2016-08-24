@@ -18,17 +18,9 @@ var gulp = require('gulp'),
 	nodemon = require('gulp-nodemon'),
 	browserSync = require('browser-sync').create();
 
-var path = {
-	src: "public/",
-	build: "dist/",
-	scripts: "js/",
-	styles:"css/",
-	images:"images/",
-	ejs:""
-}
 // 编译输出地址 和 源地址
 var compileOutDir = 'public',
-	sourceDir = 'dist';
+	sourceDir = 'src';
 
 // 编译压缩Less
 gulp.task('styles',function(){
@@ -56,6 +48,7 @@ gulp.task('styles-dev',function(){
             return 'Error compiling LESS: ' + error.message;
     	}))
 	)
+	.pipe(rename({suffix:".min"}))
 	.pipe(sourcemaps.write())  
     .pipe(gulp.dest(compileOutDir+'/css'))
     .pipe(notify({ message: 'Styles task complete' })); 
@@ -69,9 +62,12 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest(compileOutDir+'/js'))
         .pipe(notify({message: "Scripts task complete"}));
 });
-//开发环境
+// 开发环境
 gulp.task('scripts-dev', function() {
     return gulp.src(sourceDir+'/js/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'))
+	    .pipe(rename({suffix:".min"}))
         .pipe(gulp.dest(compileOutDir+'/js'))
         .pipe(notify({message: "Scripts task complete"}));
 });
@@ -79,7 +75,7 @@ gulp.task('scripts-dev', function() {
 // js语法检查
 gulp.task('jshint', function() {
     return gulp.src(sourceDir+'/js/*.js')
-        .pipe(jshint())
+        .pipe(jshint('.jshintrc'))
         .pipe(jshint.reporter('default'));
 });
 
