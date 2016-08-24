@@ -45,7 +45,4 @@ jspm_packages
 */.DS_Store
 
 # bower
-bower_compoents
-
-# public
-public
+bower_components

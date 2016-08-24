@@ -15,6 +15,7 @@ var gulp = require('gulp'),
 	cache = require('gulp-cache'),
 	imagemin = require('gulp-imagemin'),
 	ejs = require('gulp-ejs'),
+	jade = require('gulp-jade'),
 	nodemon = require('gulp-nodemon'),
 	browserSync = require('browser-sync').create();
 
@@ -81,7 +82,7 @@ gulp.task('jshint', function() {
 
 // 编译 ejs
 gulp.task('ejs',function() {
-	return gulp.src(sourceDir+"/templates/*.ejs")
+	return gulp.src(sourceDir+"/html/*.ejs")
 	.pipe(ejs({},{ext:'.html'}))
 	.pipe(gulp.dest(compileOutDir+'/html/'))
 	.pipe(notify({message: "ejs task complete"}));
@@ -91,6 +92,16 @@ gulp.task('html-dev',function() {
 	return gulp.src(sourceDir+"/html/*.html")
 	.pipe(gulp.dest(compileOutDir+'/html/'))
 	.pipe(notify({message: "html task complete"}));
+});
+
+// 编译jade
+gulp.task('jade',function() {
+	return gulp.src(sourceDir+'/html/*.jade')
+		.pipe(jade({
+			pretty:true
+		}))
+		.pipe(gulp.dest(compileOutDir+'/html/'))
+		.pipe(notify({message: "jade task complete"}));
 });
 
 // 压缩图片
@@ -153,14 +164,16 @@ gulp.task('watch-production', function () {
     gulp.watch(sourceDir+'/less/*.less', ['styles']); //当所有less文件发生改变时，调用styles任务
     gulp.watch(sourceDir+'/js/*.js',['scripts']);
     gulp.watch(sourceDir+'/images/*',['images']);
-    gulp.watch(sourceDir+'/templates/*.ejs',['ejs']);
+    gulp.watch(sourceDir+'/html/*.ejs',['ejs']);
 });
 gulp.task('watch-dev',function() {
 	gulp.start('styles-dev','scripts-dev','images-dev','html-dev');
 	gulp.watch(sourceDir+'/less/*.less', ['styles-dev']); //当所有less文件发生改变时，调用styles任务
 	gulp.watch(sourceDir+'/js/*.js',['scripts-dev']);
 	gulp.watch(sourceDir+'/images/*',['images-dev']);
-	gulp.watch(sourceDir+'/html/*',['html-dev']);
+	gulp.watch(sourceDir+'/html/*.html',['html-dev']);
+    // gulp.watch(sourceDir+'/html/*.jade',['jade']);
+    gulp.watch(sourceDir+'/html/*.ejs',['ejs']);
 })
 
 // 清理

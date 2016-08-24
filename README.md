@@ -5,6 +5,7 @@
 20160824 更新
 * 增加 bower 前端依赖管理
 * 根目录下 .jshintrc 文件配置 jshint 校验选项
+* 增加 jade 编译，但主要还是用 ejs，提供 ejs 复用头尾 demo
 
 ## 使用环境
 
