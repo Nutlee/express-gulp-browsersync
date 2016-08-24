@@ -1,0 +1,22 @@
+{
+  "name": "express-gulp-browsersync",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Nutlee <lixuanyy@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Nutlee/express-gulp-browersync",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {},
+  "dependencies": {
+    "jquery": "git@github.com:jquery/jquery.git#2.1.4",
+    "bootstrap": "git@github.com:twbs/bootstrap.git#3.3.7"
+  }
+}

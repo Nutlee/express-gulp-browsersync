@@ -2,6 +2,10 @@
 
 自动打包自动刷新 mock 环境
 
+20160824 更新
+* 增加 bower 前端依赖管理
+* 根目录下 .jshintrc 文件配置 jshint 校验选项
+
 ## 使用环境
 
 开发环境
@@ -39,6 +43,13 @@ public 文件夹下放编译后的文件
 默认启动后打开 http://localhost:5000 如果网页没反应请尝试手动刷新一次，或访问 ttp://localhost:5000/html/index.html
 
 如果接口占用，请在根目录下 gulpfile.js 文件中修改。
+
+初始化静态依赖 （已配置 bower.json 包含 jQuery 和 Bootstrap）
+
+```
+bower install
+```
+
 
 ## 手动打包 dirt 文件夹下静态资源
 
@@ -95,4 +106,36 @@ gulp browser-sync
 ## 编写 mock 接口
 
 在 router/index.js 中编写，或者在 router 文件夹内单独写 js 并且在 app.js 中引入。
+
+## 前端库安装
+
+使用 bower 来管理前端库依赖
+
+* 初始化 bower
+
+	```
+	bower init
+	```
+	
+* 根据 bower.json 安装
+
+	```
+	bower install
+	```
+
+* 安装前端库并保存到 bower.json 
+
+	```
+	# jQuery 2.1.4
+	bower install git@github.com:jquery/jquery.git#2.1.4 --save
+	# Bootstrap 3.3.7
+	bower install git@github.com:twbs/bootstrap.git#3.3.7 --save
+	```
+	
+* 卸载并从 bower.json 中删除
+	
+	```
+	bower uninstall jquery --save
+	```
+默认的库下载到 bower_components 下
 
