@@ -2,10 +2,15 @@
 
 自动打包自动刷新 mock 环境
 
+20160825 更新
+* 使用 mock.js 模拟接口数据 
+
+
 20160824 更新
 * 增加 bower 前端依赖管理
 * 根目录下 .jshintrc 文件配置 jshint 校验选项
 * 增加 jade 编译，但主要还是用 ejs，提供 ejs 复用头尾 demo
+
 
 ## 使用环境
 
@@ -107,6 +112,8 @@ gulp browser-sync
 ## 编写 mock 接口
 
 在 router/index.js 中编写，或者在 router 文件夹内单独写 js 并且在 app.js 中引入。
+
+使用 mock.js 产生随机数据
 
 ## 前端库安装
 
