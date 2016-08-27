@@ -46,7 +46,7 @@ public 文件夹下放编译后的文件
 
 开发环境下只会进行 less 编译和从开发文件夹拷贝其他静态文件到发布为止（public）下。
 
-默认启动后打开 http://localhost:5000 如果网页没反应请尝试手动刷新一次，或访问 ttp://localhost:5000/html/index.html
+默认启动后打开 http://localhost:5000 如果网页没反应请尝试手动刷新一次，或访问 http://localhost:5000/html/index.html
 
 如果接口占用，请在根目录下 gulpfile.js 文件中修改。
 

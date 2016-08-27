@@ -176,6 +176,20 @@ gulp.task('watch-dev',function() {
     gulp.watch(sourceDir+'/html/*.ejs',['ejs']);
 })
 
+// 初始化 init
+gulp.task('lib-init',function(){
+	var jslibs = [
+			"bower_components/bootstrap/dist/js/bootstrap.min.js",
+			"bower_components/jquery/dist/jquery.min.js"],
+		csslibs = [
+			"bower_components/bootstrap/dist/css/bootstrap.min.css"
+			];
+	gulp.src(jslibs)
+	.pipe(gulp.dest(compileOutDir+"/lib/js/"));	
+	gulp.src(csslibs)
+	.pipe(gulp.dest(compileOutDir+"/lib/css/"));
+});
+
 // 清理
 gulp.task('clean', function() {
     del([compileOutDir+'/css/*']);
