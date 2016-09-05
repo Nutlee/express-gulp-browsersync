@@ -2,6 +2,11 @@
 
 自动打包自动刷新 mock 环境
 
+20160905 更新
+
+* 增加 bower 代理设置
+* Bootstrap 默认依赖的 jQuery 是 1.11.1 ，调整原来是使用的 2.14
+
 20160828 更新
 
 * 加入 lib-init，将前端依赖库核心文件倒入到 public 文件夹中。
@@ -83,7 +88,7 @@
 	如果接口占用，请在根目录下 gulpfile.js 文件中修改。
 
 
-## 手动打包 dirt 文件夹下静态资源
+## 手动打包 src 文件夹下静态资源
 
 * less 编译、压缩
 	
@@ -193,3 +198,14 @@ router.route('/test')
 	bower uninstall jquery --save
 	```
 
+* bower 配置 http/https 代理
+	
+	* 在用户更目录或者项目根目录下创建 .bowerrc 文件
+	* 添加内容
+
+	```
+	{
+  		"proxy": "http://127.0.0.1:8888",
+  		"https-proxy": "http://127.0.0.1:8888"
+	}
+	```

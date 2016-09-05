@@ -23,9 +23,39 @@ var gulp = require('gulp'),
 var compileOutDir = 'public',
 	sourceDir = 'src';
 
+var path = {
+	"dist":"public",
+	"src": "src"
+}
+path.styles = (function() {
+    return {
+      "src":[path.src+"/less/*.less","!"+path.src+"/less/utils.less"],
+      "dist":path.dist+"/css"
+    }
+})();
+path.scripts = (function() {
+	return {
+		"src":path.src+"/js",
+		"dist":path.dist+"/js"
+	}
+})();
+path.html = (function() {
+	return {
+		"src":path.src+"/html",
+		"dist":path.dist+"/html"
+	}
+})();
+path.images = (function() {
+	return {
+		"src":path.src+"/images",		
+		"dist":path.dist+"/images"
+	}
+})();
+
+
 // 编译压缩Less
 gulp.task('styles',function(){
-	return gulp.src(sourceDir+'/less/*.less')
+	return gulp.src(path.styles.src)
 	.pipe(sourcemaps.init()) // 执行sourcemaps
 	.pipe(less({
 		plugins: [autoprefix]
@@ -37,11 +67,11 @@ gulp.task('styles',function(){
 	.pipe(rename({suffix:".min"}))
 	.pipe(cssmin())
 	.pipe(sourcemaps.write())  
-    .pipe(gulp.dest(compileOutDir+'/css'))
+    .pipe(gulp.dest(path.styles.dist)
     .pipe(notify({ message: 'Styles task complete' })); 
 });
 gulp.task('styles-dev',function(){
-	return gulp.src(sourceDir+'/less/*.less')
+	return gulp.src(path.styles.src)
 	.pipe(sourcemaps.init()) // 执行sourcemaps
 	.pipe(less({
 		plugins: [autoprefix]
@@ -51,7 +81,7 @@ gulp.task('styles-dev',function(){
 	)
 	.pipe(rename({suffix:".min"}))
 	.pipe(sourcemaps.write())  
-    .pipe(gulp.dest(compileOutDir+'/css'))
+    .pipe(gulp.dest(path.styles.dist))
     .pipe(notify({ message: 'Styles task complete' })); 
 });
 
