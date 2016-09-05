@@ -16,7 +16,7 @@
   ],
   "devDependencies": {},
   "dependencies": {
-    "jquery": "git@github.com:jquery/jquery.git#2.1.4",
-    "bootstrap": "git@github.com:twbs/bootstrap.git#3.3.7"
+    "bootstrap": "git@github.com:twbs/bootstrap.git#3.3.7",
+    "jquery": "https://github.com/jquery/jquery.git#1.11.1"
   }
 }
