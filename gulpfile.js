@@ -47,8 +47,8 @@ path.html = (function() {
 })();
 path.images = (function() {
 	return {
-		"src":path.src+"/images",		
-		"dist":path.dist+"/images"
+		"src":path.src+"/images/**/*",		
+		"dist":path.dist+"/images/**/*"
 	}
 })();
 
@@ -67,7 +67,7 @@ gulp.task('styles',function(){
 	.pipe(rename({suffix:".min"}))
 	.pipe(cssmin())
 	.pipe(sourcemaps.write())  
-    .pipe(gulp.dest(path.styles.dist)
+    .pipe(gulp.dest(path.styles.dist))
     .pipe(notify({ message: 'Styles task complete' })); 
 });
 gulp.task('styles-dev',function(){
@@ -87,25 +87,25 @@ gulp.task('styles-dev',function(){
 
 // 压缩 js
 gulp.task('scripts', function() {
-    return gulp.src(sourceDir+'/js/*.js')
+    return gulp.src(path.scripts.src+'/*.js')
     	.pipe(rename({suffix:".min"}))
         .pipe(jsmin())
-        .pipe(gulp.dest(compileOutDir+'/js'))
+        .pipe(gulp.dest(path.scripts.dist))
         .pipe(notify({message: "Scripts task complete"}));
 });
 // 开发环境
 gulp.task('scripts-dev', function() {
-    return gulp.src(sourceDir+'/js/*.js')
+    return gulp.src(path.scripts.src+'/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
 	    .pipe(rename({suffix:".min"}))
-        .pipe(gulp.dest(compileOutDir+'/js'))
+        .pipe(gulp.dest(path.scripts.dist))
         .pipe(notify({message: "Scripts task complete"}));
 });
 
 // js语法检查
 gulp.task('jshint', function() {
-    return gulp.src(sourceDir+'/js/*.js')
+    return gulp.src(path.scripts.src+'/*.js')
         .pipe(jshint('.jshintrc'))
         .pipe(jshint.reporter('default'));
 });
@@ -136,15 +136,15 @@ gulp.task('jade',function() {
 
 // 压缩图片
 gulp.task('images', function() {  
-  return gulp.src(sourceDir+'/images/**/*')
+  return gulp.src(path.images.src)
     .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-    .pipe(gulp.dest(compileOutDir+'/images'))
+    .pipe(gulp.dest(path.images.dist))
     .pipe(notify({ message: 'Images task complete'}));
 });
 //开发环境
 gulp.task('images-dev', function() {  
-  return gulp.src(sourceDir+'/images/**/*')
-    .pipe(gulp.dest(compileOutDir+'/images'))
+  return gulp.src(path.images.src)
+    .pipe(gulp.dest(path.images.dist))
     .pipe(notify({ message: 'Images task complete'}));
 });
 
