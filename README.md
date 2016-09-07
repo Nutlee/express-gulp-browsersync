@@ -5,7 +5,7 @@
 20160907 更新
 
 * 梳理文件结构和 gulpfile.js 中引用的路径，现在用一个 path 对象来描述路径结构
-* 默认是自动打开 Mac 下 Chrome，注释了一行 PC 下打开 Chrome 的，请自行修改 gulpfile.js 下 browser-sync 这个 task
+* 默认是自动打开 Mac 下 Chrome，注释了一行 PC 下打开 Chrome 的，请自行修改 gulpfile.js 下 browser-sync 这个 task 感谢[@CarnivalO](https://github.com/CarnivalO)
 * 优化和删减了部分代码
 
 20160905 更新
@@ -215,3 +215,5 @@ router.route('/test')
   		"https-proxy": "http://127.0.0.1:8888"
 	}
 	```
+
+
