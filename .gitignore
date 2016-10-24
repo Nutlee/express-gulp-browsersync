@@ -46,3 +46,6 @@ jspm_packages
 
 # bower
 bower_components
+
+# dist
+public

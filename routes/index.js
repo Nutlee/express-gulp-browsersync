@@ -32,7 +32,7 @@ router.route('/hello')
 			console.log("buffer",bufferStr);
             });
 	    }
-	    if (true) {}
+
 	    var body = [];
 	    body.push({'name':'张三'});
 	    body.push({'name':'李四'});

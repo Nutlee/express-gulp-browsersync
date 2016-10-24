@@ -55,10 +55,29 @@ path.html = (function() {
 path.images = (function() {
 	return {
 		"src":path.src+"/images/**/*",		
-		"dist":path.dist+"/images/**/*"
+		"dist":path.dist+"/images/"
 	}
 })();
 
+//监控文件改动 刷新浏览器
+gulp.task('browser-sync', ['serve'],function () {
+	// 不能用 loalhost
+	return browserSync.init({
+		proxy: 'http://127.0.0.1:3000',
+		files: [path.dist+'/**/*.*'],
+		browser: "/Applications/Google Chrome.app",
+		// Windows 下用 Chrome 打开
+		// browser: "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+		port: 5000
+	});
+    // browserSync({
+    // 	files: ["public/*/*.*"],
+    //     server: {
+    //       baseDir: './public',
+    //       browser: "google chrome"        
+    //    } 
+    // });	
+});
 
 // 编译压缩Less
 gulp.task('styles',function(){
@@ -177,26 +196,6 @@ gulp.task('serve',function(cb) {
 			started = true; 
 		} 
 	});		
-});
-
-//监控文件改动 刷新浏览器
-gulp.task('browser-sync', ['serve'],function () {
-	// 不能用 loalhost
-	return browserSync.init({
-		proxy: 'http://127.0.0.1:3000',
-		files: [path.dist+'/**/*.*'],
-		browser: "/Applications/Google Chrome.app",
-		// Windows 下用 Chrome 打开
-		// browser: "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
-		port: 5000
-	});
-    // browserSync({
-    // 	files: ["public/*/*.*"],
-    //     server: {
-    //       baseDir: './public',
-    //       browser: "google chrome"        
-    //    } 
-    // });	
 });
 
 // 监控静态资源处理
