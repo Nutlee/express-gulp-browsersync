@@ -1,6 +1,11 @@
 # express-gulp-browsersync
 
-自动打包自动刷新 mock 环境
+自动打包自动刷新简单 mock 环境，适合手工开发的小项目，提供轻量级开发辅助。复杂多页面脚手架请参见基于 webpack 的[Nutlee/webpack-seed](https://github.com/Nutlee/webpack-seed)。
+
+20161101 更新
+
+* 将 Express 的模板换为 ejs (话说 Jade 确实很难用啊)
+* 删除了 gulpfile 中关于 Jade d的代码
 
 20161024 更新
 

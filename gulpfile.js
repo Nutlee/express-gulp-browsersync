@@ -15,7 +15,6 @@ var gulp = require('gulp'),
 	cache = require('gulp-cache'),
 	imagemin = require('gulp-imagemin'),
 	ejs = require('gulp-ejs'),
-	jade = require('gulp-jade'),
 	nodemon = require('gulp-nodemon'),
 	browserSync = require('browser-sync').create();
 
@@ -151,16 +150,6 @@ gulp.task('html-dev',function() {
 	.pipe(notify({message: "html-dev task complete"}));
 });
 
-// 编译jade
-gulp.task('jade',function() {
-	return gulp.src(path.src+'/html/*.jade')
-		.pipe(jade({
-			pretty:true
-		}))
-		.pipe(gulp.dest(path.dist+'/html/'))
-		.pipe(notify({message: "jade task complete"}));
-});
-
 // 压缩图片
 gulp.task('images', function() {  
   return gulp.src(path.images.src)
@@ -212,7 +201,6 @@ gulp.task('watch-dev',function() {
 	gulp.watch(path.scripts.src,['scripts-dev']);
 	gulp.watch(path.images.src,['images-dev']);
 	gulp.watch(path.src+'/html/**/*.html',['html-dev']);
-    // gulp.watch(path.src+'/html/*.jade',['jade']);
     gulp.watch(path.html.src,['ejs']);
 })
 
