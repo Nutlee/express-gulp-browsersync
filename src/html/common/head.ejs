@@ -1,19 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head lang="zh-cmn-Hans">
-
+<% isDevModal = false %>
 <meta charset="UTF-8">
-<title>ejs模板测试</title>
+<title><%= title %></title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="author" content="">
-
-
-<link rel="stylesheet" href="../lib/css/bootstrap.min.css" >
-
-
+<% if ( (locals.styles !== undefined) && (locals.styles.length >0) ) { %>
+<% for(var i=0; i<styles.length; i++) {%>
+<link rel="stylesheet" href="<%= styles[i]%>" >
+<% } %>
+<% } %>
 <script>
 	function autoSize() {
 		var doc = document.documentElement;
@@ -41,30 +38,17 @@
 	    }
 	};	
 </script>
-
-
-</head>
-<body>
-	<div class="container">
-		<p>这是一个ejs模板演示</p>
-		<p>头</p>
-		<ul>
-			<li>引用css</li>
-			<li>进行公共的js处理</li>
-			<li>进行 Cookie 判断重定向</li>
-			<li>在 head 模板中 isDevModal 为 false 时才会开启 Cookie 检查</li>
-		</ul>
-		<p>尾</p>
-		<ul>
-			<li>引用js</li>
-		</ul>
-	</div>
-
-
-<script src="../lib/js/jquery.min.js" ></script>
-
-<script src="../lib/js/bootstrap.min.js" ></script>
-
-
-</body>
-</html>
+<% if ( !isDevModal && (locals.cookie !== undefined) && (locals.cookie.required.length >0) ) { %>
+<script>
+	~function(){
+		var cookieArr = '<%= cookie.required%>'.split(','),
+			redirectTo = '<%= cookie.redirectTo%>' ;
+		for (var i = cookieArr.length - 1; i >= 0; i--) {
+			if ( !Cookie.get(cookieArr[i])) {
+			    window.location.href = redirectTo;
+			    // console.log('跳转了',redirectTo);
+			}
+		};
+	}()
+</script>
+<% } %>

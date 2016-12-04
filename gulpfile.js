@@ -29,7 +29,7 @@ var gulp = require('gulp'),
 var path = {
 	"dist":"public",
 	"src": "src"
-}
+};
 path.styles = (function() {
     return {
     	"src":{
@@ -37,25 +37,25 @@ path.styles = (function() {
     		"css": [path.src+"/css/*.css"]
     	},
     	"dist":path.dist+"/css"
-    }
+    };
 })();
 path.scripts = (function() {
 	return {
 		"src":path.src+"/js/**/*.js",
 		"dist":path.dist+"/js"
-	}
+	};
 })();
 path.html = (function() {
 	return {
 		"src":path.src+"/html/*.ejs",
 		"dist":path.dist+"/html"
-	}
+	};
 })();
 path.images = (function() {
 	return {
 		"src":path.src+"/images/**/*",		
 		"dist":path.dist+"/images/"
-	}
+	};
 })();
 
 //监控文件改动 刷新浏览器
@@ -96,6 +96,9 @@ gulp.task('styles',function(){
     .pipe(notify({ message: 'Styles task complete' })); 
 });
 gulp.task('styles-dev',function(){
+	gulp.src(path.styles.src.css)
+		.pipe(rename({suffix:".min"})) 
+	    .pipe(gulp.dest(path.styles.dist));
 	return gulp.src(path.styles.src.less)
 	.pipe(sourcemaps.init()) // 执行sourcemaps
 	.pipe(less({
@@ -202,7 +205,7 @@ gulp.task('watch-dev',function() {
 	gulp.watch(path.images.src,['images-dev']);
 	gulp.watch(path.src+'/html/**/*.html',['html-dev']);
     gulp.watch(path.html.src,['ejs']);
-})
+});
 
 // 初始化 init
 gulp.task('lib-init',function(){
@@ -228,7 +231,7 @@ gulp.task('clean', function() {
 
 // 强制文件打包
 gulp.task('fcompile',['clean'],function() {
-	gulp.start('styles','scripts','images','ejs');
+	gulp.start('clean','lib-init','styles','scripts','images','ejs');
 });
 
 // 默认任务 开发环境

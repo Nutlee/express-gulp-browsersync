@@ -2,6 +2,12 @@
 
 自动打包自动刷新简单 mock 环境，适合手工开发的小项目，提供轻量级开发辅助。复杂多页面脚手架请参见基于 webpack 的[Nutlee/webpack-seed](https://github.com/Nutlee/webpack-seed)。
 
+20161204 更新
+
+* 增加了 ejs 关于头尾复用的 demo
+* 增加了 Cookie 检查，在开发环境下忽略
+* 目前只有首次开启服务器时会搬运 `src/css` 的内容（没有一直监视）
+
 20161101 更新
 
 * 将 Express 的模板换为 ejs (话说 Jade 确实很难用啊)
@@ -64,6 +70,11 @@
 
 1. 开发环境
 
+	* 首次运行
+
+	```
+	gulp lib-init
+	```
 
 	* 一键运行
 		

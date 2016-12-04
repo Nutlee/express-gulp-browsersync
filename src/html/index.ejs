@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head lang="zh-cmn-Hans">
-    <meta charset="UTF-8">
-    <title>ejs模版测试</title>
-    <link rel="stylesheet" href="../css/style.min.css">
-    <link rel="stylesheet" href="../css/style_css.min.css">
+<%- include('common/head',{
+	title: 'ejs模板测试',
+	styles:[
+		'../lib/css/bootstrap.min.css',
+	],
+	cookie: {
+		required: [],
+		redirectTo: ''
+	},
+}) %>
 </head>
 <body>
-	<h1 id="title"></h1>
-	<% include common/header %>
-	<h1>测试测试11111</h1>
-	<% include common/footer %>
-	<script src="../js/index.min.js"></script>
+	<div class="container">
+		<p>这是一个ejs模板演示</p>
+		<p>头</p>
+		<ul>
+			<li>引用css</li>
+			<li>进行公共的js处理</li>
+			<li>进行 Cookie 判断重定向</li>
+			<li>在 head 模板中 isDevModal 为 false 时才会开启 Cookie 检查</li>
+		</ul>
+		<p>尾</p>
+		<ul>
+			<li>引用js</li>
+		</ul>
+	</div>
+<%- include('common/footer',{ 
+	scripts: [
+        '../lib/js/jquery.min.js',   
+        '../lib/js/bootstrap.min.js'
+	]
+}) %>
 </body>
 </html>

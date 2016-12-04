@@ -1,1 +1,5 @@
-<p>footer11/p>
+<% if (locals.scripts !== undefined && locals.scripts.length>0 ) { %>
+<% for(var i=0; i<scripts.length; i++) {%>
+<script src="<%=scripts[i]%>" ></script>
+<% } %>
+<% } %>
