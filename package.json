@@ -37,11 +37,15 @@
     "gulp-nodemon": "^2.2.1",
     "gulp-notify": "^2.2.0",
     "gulp-rename": "^1.2.2",
+    "gulp-rev": "^7.1.2",
+    "gulp-rev-collector": "^1.0.5",
+    "gulp-rev-hash3": "^1.0.6",
     "gulp-ruby-sass": "^2.0.6",
     "gulp-sourcemaps": "^1.9.0",
     "gulp-uglify": "^1.5.4",
     "jshint": "^2.9.4",
     "less-plugin-autoprefix": "^1.5.1",
-    "mockjs": "^1.0.1-beta3"
+    "mockjs": "^1.0.1-beta3",
+    "run-sequence": "^1.2.2"
   }
 }

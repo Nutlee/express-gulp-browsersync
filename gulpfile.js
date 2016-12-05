@@ -16,7 +16,10 @@ var gulp = require('gulp'),
 	imagemin = require('gulp-imagemin'),
 	ejs = require('gulp-ejs'),
 	nodemon = require('gulp-nodemon'),
-	browserSync = require('browser-sync').create();
+	browserSync = require('browser-sync').create(),
+	rev = require('gulp-rev'),
+	revCollector = require("gulp-rev-collector"),
+	runSequence = require('run-sequence');
 
 
 /**
@@ -28,7 +31,11 @@ var gulp = require('gulp'),
  */
 var path = {
 	"dist":"public",
-	"src": "src"
+	"src": "src",
+	"rev": {
+		"js":"rev/js",
+		"css": "rev/css"
+	}
 };
 path.styles = (function() {
     return {
@@ -91,8 +98,11 @@ gulp.task('styles',function(){
     // .pipe(gulp.dest('dist/css'))
 	.pipe(rename({suffix:".min"}))
 	.pipe(cssmin())
+	.pipe(rev())
 	.pipe(sourcemaps.write())  
     .pipe(gulp.dest(path.styles.dist))
+    .pipe(rev.manifest())
+    .pipe(gulp.dest(path.rev.css))
     .pipe(notify({ message: 'Styles task complete' })); 
 });
 gulp.task('styles-dev',function(){
@@ -118,7 +128,10 @@ gulp.task('scripts', function() {
     return gulp.src(path.scripts.src)
     	.pipe(rename({suffix:".min"}))
         .pipe(jsmin())
+        .pipe(rev())
         .pipe(gulp.dest(path.scripts.dist))
+        .pipe(rev.manifest())
+        .pipe(gulp.dest(path.rev.js))
         .pipe(notify({message: "Scripts task complete"}));
 });
 // 开发环境
@@ -167,6 +180,12 @@ gulp.task('images-dev', function() {
     .pipe(notify({ message: 'Images-dev task complete'}));
 });
 
+gulp.task('revHtml', function () {
+    return gulp.src(['rev/**/*.json', path.html.dist+'/*.html'])
+        .pipe(revCollector())
+        .pipe(gulp.dest(path.html.dist));
+});
+
 // 启动服务器
 gulp.task('serve',function(cb) {
 	// return nodemon({
@@ -198,8 +217,7 @@ gulp.task('watch-production', function () {
     gulp.watch(path.html.src,['ejs']);
 });
 gulp.task('watch-dev',function() {
-	gulp.start('styles-dev','scripts-dev','images-dev','ejs','html-dev');
-	console.log(path.styles.src.less);
+	gulp.start('clean','styles-dev','scripts-dev','images-dev','ejs','html-dev');
 	gulp.watch(path.styles.src.less, ['styles-dev']); 
 	gulp.watch(path.scripts.src,['scripts-dev']);
 	gulp.watch(path.images.src,['images-dev']);
@@ -230,11 +248,12 @@ gulp.task('clean', function() {
 });
 
 // 强制文件打包
-gulp.task('fcompile',['clean'],function() {
-	gulp.start('clean','lib-init','styles','scripts','images','ejs');
+gulp.task('fcompile',function(callback) {
+	// gulp.start('lib-init','styles','scripts','images','ejs','revHtml');
+	runSequence('clean','lib-init',['styles','scripts','images','ejs'],'revHtml',callback);
 });
 
 // 默认任务 开发环境
-gulp.task('default',['browser-sync','watch-dev']); //定义默认任务
+gulp.task('default',['watch-dev','browser-sync']); //定义默认任务
 // 生产环境
-gulp.task('production',['browser-sync','watch-production']); 
+gulp.task('production',['watch-production','browser-sync']); 

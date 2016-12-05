@@ -2,6 +2,11 @@
 
 自动打包自动刷新简单 mock 环境，适合手工开发的小项目，提供轻量级开发辅助。复杂多页面脚手架请参见基于 webpack 的[Nutlee/webpack-seed](https://github.com/Nutlee/webpack-seed)。
 
+20161205 更新
+
+* 增加 gulp-rev 来给静态资源打上 hash（解决微信端缓存）
+* 使用 run-sequence 保证任务 gulp 任务同步进行
+
 20161204 更新
 
 * 增加了 ejs 关于头尾复用的 demo
