@@ -17,9 +17,8 @@ var gulp = require('gulp'),
 	ejs = require('gulp-ejs'),
 	nodemon = require('gulp-nodemon'),
 	browserSync = require('browser-sync').create(),
-	rev = require('gulp-rev'),
-	revCollector = require("gulp-rev-collector"),
-	runSequence = require('run-sequence');
+	runSequence = require('run-sequence'),
+	revHash = require('gulp-rev-hash3');
 
 
 /**
@@ -32,19 +31,21 @@ var gulp = require('gulp'),
 var path = {
 	"dist":"public",
 	"src": "src",
-	"rev": {
-		"js":"rev/js",
-		"css": "rev/css"
-	}
 };
 path.styles = (function() {
     return {
     	"src":{
     		"less": [path.src+"/less/**/*.less","!"+path.src+"/less/utils.less"],
-    		"css": [path.src+"/css/*.css"]
+    		"css": path.src+"/css/*.css",
     	},
-    	"dist":path.dist+"/css"
+    	"dist":path.dist+"/css"    	
     };
+})();
+path.fonts = (function(){
+	return {
+    	"src": path.src+"/fonts/*",
+    	"dist": path.dist+"/fonts"
+	}
 })();
 path.scripts = (function() {
 	return {
@@ -66,7 +67,7 @@ path.images = (function() {
 })();
 
 //监控文件改动 刷新浏览器
-gulp.task('browser-sync', ['serve'],function () {
+gulp.task('browser-sync', ['server'],function () {
 	// 不能用 loalhost
 	return browserSync.init({
 		proxy: 'http://127.0.0.1:3000',
@@ -87,6 +88,11 @@ gulp.task('browser-sync', ['serve'],function () {
 
 // 编译压缩Less
 gulp.task('styles',function(){
+	gulp.src(path.styles.src.css)
+		.pipe(cssmin())
+	    .pipe(gulp.dest(path.styles.dist));	
+	gulp.src(path.fonts.src)
+	    .pipe(gulp.dest(path.fonts.dist));
 	return gulp.src(path.styles.src.less)
 	.pipe(sourcemaps.init()) // 执行sourcemaps
 	.pipe(less({
@@ -98,17 +104,15 @@ gulp.task('styles',function(){
     // .pipe(gulp.dest('dist/css'))
 	.pipe(rename({suffix:".min"}))
 	.pipe(cssmin())
-	.pipe(rev())
 	.pipe(sourcemaps.write())  
     .pipe(gulp.dest(path.styles.dist))
-    .pipe(rev.manifest())
-    .pipe(gulp.dest(path.rev.css))
     .pipe(notify({ message: 'Styles task complete' })); 
 });
 gulp.task('styles-dev',function(){
 	gulp.src(path.styles.src.css)
-		.pipe(rename({suffix:".min"})) 
-	    .pipe(gulp.dest(path.styles.dist));
+	    .pipe(gulp.dest(path.styles.dist));	
+	gulp.src(path.fonts.src)
+	    .pipe(gulp.dest(path.fonts.dist));
 	return gulp.src(path.styles.src.less)
 	.pipe(sourcemaps.init()) // 执行sourcemaps
 	.pipe(less({
@@ -128,15 +132,11 @@ gulp.task('scripts', function() {
     return gulp.src(path.scripts.src)
     	.pipe(rename({suffix:".min"}))
         .pipe(jsmin())
-        .pipe(rev())
         .pipe(gulp.dest(path.scripts.dist))
-        .pipe(rev.manifest())
-        .pipe(gulp.dest(path.rev.js))
         .pipe(notify({message: "Scripts task complete"}));
 });
 // 开发环境
 gulp.task('scripts-dev', function() {
-	console.log(path.scripts.src);
     return gulp.src(path.scripts.src)
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
@@ -181,13 +181,16 @@ gulp.task('images-dev', function() {
 });
 
 gulp.task('revHtml', function () {
-    return gulp.src(['rev/**/*.json', path.html.dist+'/*.html'])
-        .pipe(revCollector())
+    return gulp.src(path.html.dist+'/*.html')
+        .pipe(revHash({
+        	assetsDir: path.dist,
+        	projectPath: './'
+        }))
         .pipe(gulp.dest(path.html.dist));
 });
 
 // 启动服务器
-gulp.task('serve',function(cb) {
+gulp.task('server',function(cb) {
 	// return nodemon({
 	// 		script : 'bin/www',  
 	// 		ext: 'js html',  
@@ -211,13 +214,14 @@ gulp.task('serve',function(cb) {
 
 // 监控静态资源处理
 gulp.task('watch-production', function () {
+	gulp.start('styles','scripts','images','html-dev','ejs');
     gulp.watch(path.styles.src.less, ['styles']); 
     gulp.watch(path.scripts.src,['scripts']);
     gulp.watch(path.images.src,['images']);
     gulp.watch(path.html.src,['ejs']);
 });
 gulp.task('watch-dev',function() {
-	gulp.start('clean','styles-dev','scripts-dev','images-dev','ejs','html-dev');
+	gulp.start('styles-dev','scripts-dev','images-dev','ejs','html-dev');
 	gulp.watch(path.styles.src.less, ['styles-dev']); 
 	gulp.watch(path.scripts.src,['scripts-dev']);
 	gulp.watch(path.images.src,['images-dev']);
@@ -241,16 +245,13 @@ gulp.task('lib-init',function(){
 
 // 清理
 gulp.task('clean', function() {
-    del([path.styles.dist,
-    	path.scripts.dist,
-    	path.images.dist,
-    	path.html.dist]);
+    return del(path.dist+'/**/*');
 });
 
 // 强制文件打包
 gulp.task('fcompile',function(callback) {
 	// gulp.start('lib-init','styles','scripts','images','ejs','revHtml');
-	runSequence('clean','lib-init',['styles','scripts','images','ejs'],'revHtml',callback);
+	runSequence('clean',['lib-init','styles','scripts','images','ejs'],'revHtml',callback);
 });
 
 // 默认任务 开发环境

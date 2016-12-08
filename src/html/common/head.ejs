@@ -7,9 +7,11 @@
 <meta name="keywords" content="">
 <meta name="author" content="">
 <% if ( (locals.styles !== undefined) && (locals.styles.length >0) ) { %>
+<!-- rev-hash -->
 <% for(var i=0; i<styles.length; i++) {%>
 <link rel="stylesheet" href="<%= styles[i]%>" >
 <% } %>
+<!-- end -->
 <% } %>
 <script>
 	function autoSize() {

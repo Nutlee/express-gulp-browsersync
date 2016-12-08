@@ -1,5 +1,7 @@
 <% if (locals.scripts !== undefined && locals.scripts.length>0 ) { %>
+<!-- rev-hash -->
 <% for(var i=0; i<scripts.length; i++) {%>
 <script src="<%=scripts[i]%>" ></script>
 <% } %>
+<!-- end -->
 <% } %>

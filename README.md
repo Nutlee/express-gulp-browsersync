@@ -2,6 +2,11 @@
 
 自动打包自动刷新简单 mock 环境，适合手工开发的小项目，提供轻量级开发辅助。复杂多页面脚手架请参见基于 webpack 的[Nutlee/webpack-seed](https://github.com/Nutlee/webpack-seed)。
 
+20151208 更新
+
+* 移除 gulp-rev 换用 futuweb alanzhang(张伦) 的 [gulp-rev-hash3](https://github.com/futuweb/gulp-rev-hash3)，感谢作者 ❤️
+* 重新梳理优化启动命令，增加对 fonts 文件夹的搬运
+
 20161205 更新
 
 * 增加 gulp-rev 来给静态资源打上 hash（解决微信端缓存）
@@ -81,7 +86,7 @@
 	gulp lib-init
 	```
 
-	* 一键运行
+	* 运行
 		
 	```
 	gulp
@@ -89,13 +94,13 @@
 
 2. 生产环境
 
-	* 首次运行请先进行强制打包
+	* 直接强制打包
 	
 	```
 	gulp fcompile
 	```
 
-	* 一键运行
+	* 打包并运行预览
 	
 	```
 	gulp production
@@ -139,7 +144,7 @@
 
 ## 手动打包 src 文件夹下静态资源
 
-* less 编译、压缩
+* less 编译、压缩 （搬运css、fonts）
 	
 	```
 	gulp styles
