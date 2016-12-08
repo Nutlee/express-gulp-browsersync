@@ -61,7 +61,6 @@
 * 根目录下 .jshintrc 文件配置 jshint 校验选项
 * 增加 jade 编译，但主要还是用 ejs，提供 ejs 复用头尾 demo
 
-
 ## 使用环境
 
 1. 准备
@@ -264,4 +263,36 @@ router.route('/test')
 	}
 	```
 
+## ejs 模板
+	
+* 头部复用
+
+	在 `html/common/head` 中进行meta属性、css、公共js 加载和复用，最后形如下列代码的方式在也不同的页面使用
+	
+	```ejs
+<%- include('common/head',{
+	title: 'ejs模板测试',
+	styles:[
+		'../lib/css/bootstrap.min.css',
+	],
+	// 进行 cookie 检查
+	cookie: {
+		required: [],
+		redirectTo: ''
+	},
+}) %>
+	```
+	
+* 尾部复用
+
+	在 `html/common/footer` 中进行 js 的加载复用，使用形如以下形式的方式在不同页面使用
+	
+	```ejs
+	<%- include('common/footer',{ 
+	scripts: [
+        '../lib/js/jquery.min.js',   
+        '../lib/js/bootstrap.min.js'
+	]
+}) %>
+	```
 
