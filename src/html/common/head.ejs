@@ -1,4 +1,4 @@
-<% isDevModal = false %>
+
 <meta charset="UTF-8">
 <title><%= title %></title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -39,6 +39,7 @@
 	        if(this.get(name) != null) this.set(name,null,-1);
 	    }
 	};	
+	console.log('<%= isDevModal%>');
 </script>
 <% if ( !isDevModal && (locals.cookie !== undefined) && (locals.cookie.required.length >0) ) { %>
 <script>

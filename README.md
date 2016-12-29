@@ -2,6 +2,11 @@
 
 自动打包自动刷新简单 mock 环境，适合手工开发的小项目，提供轻量级开发辅助。复杂多页面脚手架请参见基于 webpack 的[Nutlee/webpack-seed](https://github.com/Nutlee/webpack-seed)。
 
+20151229 更新
+
+* 增加 gulp-nodemon 监控重启的忽略文件夹，之前会造成多次重启
+* 修改开发环境默认 `isDevModal = true`，在使用 gulp-ejs 里传入参数
+
 20151208 更新
 
 * 移除 gulp-rev 换用 futuweb alanzhang(张伦) 的 [gulp-rev-hash3](https://github.com/futuweb/gulp-rev-hash3)，感谢作者 ❤️

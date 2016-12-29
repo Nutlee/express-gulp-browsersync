@@ -7,7 +7,6 @@ router.get('/', function(req, res, next) {
   // res.render('index', { title: 'Express' });
   res.redirect('../html/index.html');
 });
-router.get('/')
 router.route('/hello')
 	.get(function(req, res, next) {
 	    console.log(req.url);

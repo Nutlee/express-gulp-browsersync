@@ -66,6 +66,9 @@ path.images = (function() {
 	};
 })();
 
+// 是否开发模式
+var isDevModal = false;
+
 //监控文件改动 刷新浏览器
 gulp.task('browser-sync', ['server'],function () {
 	// 不能用 loalhost
@@ -155,7 +158,7 @@ gulp.task('jshint', function() {
 // 编译 ejs
 gulp.task('ejs',function() {
 	return gulp.src(path.html.src)
-	.pipe(ejs({},{ext:'.html'}))
+	.pipe(ejs({isDevModal: isDevModal||false},{ext:'.html'}))
 	.pipe(gulp.dest(path.html.dist))
 	.pipe(notify({message: "ejs task complete"}));
 });
@@ -201,7 +204,8 @@ gulp.task('server',function(cb) {
 	var started = false;
 
 	nodemon({
-		script: 'bin/www'
+		script: 'bin/www',
+		ignore: ['node_modules/','public/**/*.*']
 	}).on('start', function () {
 		// to avoid nodemon being started multiple times
 		// thanks @matthisk
@@ -221,6 +225,7 @@ gulp.task('watch-production', function () {
     gulp.watch(path.html.src,['ejs']);
 });
 gulp.task('watch-dev',function() {
+	isDevModal = true;
 	gulp.start('styles-dev','scripts-dev','images-dev','ejs','html-dev');
 	gulp.watch(path.styles.src.less, ['styles-dev']); 
 	gulp.watch(path.scripts.src,['scripts-dev']);
